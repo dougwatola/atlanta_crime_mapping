@@ -12,38 +12,78 @@ var myMap = L.map("map", {
     accessToken: API_KEY
   }).addTo(myMap);
   
-  var red_pin = L.icon({
-    iconUrl: 'red-pin.png',
+  var green_pin = L.icon({
+    iconUrl: 'green-pin.png',
     //shadowUrl: 'leaf-shadow.png',
-    //iconSize:     [38, 95], // size of the icon
-    iconSize:     [30, 45], // size of the icon
+    iconSize:     [38, 95], // size of the icon
     //shadowSize:   [50, 64], // size of the shadow
     iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
     //shadowAnchor: [4, 62],  // the same for the shadow
     popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
-}); 
+  });
 
-d3.csv("COBRA-2009-2018.csv").then(function(crimeData) {
-    //Print crime data
-    console.log(crimeData[0]['UCR Literal']);
-    console.log(crimeData[1]['UCR Literal']);
-    console.log(crimeData[2]['UCR Literal']);
+  var red_pin = L.icon({
+    iconUrl: 'red-pin.png',
+    //shadowUrl: 'leaf-shadow.png',
+    iconSize:     [38, 95], // size of the icon
+    //shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    //shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+  });
 
+  var orange_pin = L.icon({
+    iconUrl: 'orange-pin.png',
+    //shadowUrl: 'leaf-shadow.png',
+    iconSize:     [38, 95], // size of the icon
+    //shadowSize:   [50, 64], // size of the shadow
+    iconAnchor:   [22, 94], // point of the icon which will correspond to marker's location
+    //shadowAnchor: [4, 62],  // the same for the shadow
+    popupAnchor:  [-3, -76] // point from which the popup should open relative to the iconAnchor
+  });
+
+d3.csv("COBRA-2019-Dec.csv").then(function(crimeData) {
+    
     
     for (i=0; i < (crimeData.length); i++) {
 
-        //initialize location information
+        //Place crime type for pop-up information
         var location = [];
         var crime_type = (crimeData[i]['UCR Literal']);
+        var street_address = (crimeData[i]['Location']);
+        var date = (crimeData[i]['Possible Date']);
+        var time = (crimeData[i]['Possible Time']);
 
-    
+
+        //Place lat long data into location variable
         location.push(crimeData[i]['Latitude']);
         location.push(crimeData[i]['Longitude']);
+
+        //Determine color of pin based on personal or property crime
+        //Personal crime will be red and property crime will be green
+        
+        var pin = '';
+
+        if ((crimeData[i]['UCR Literal']) == 'AGG ASSAULT') {
+          pin = red_pin;
+        }
+        else if ((crimeData[i]['UCR Literal']) == 'ROBBERY-PEDESTRIAN') {
+          pin = red_pin;
+        }
+        else if ((crimeData[i]['UCR Literal']) == 'HOMICIDE') {
+          pin = red_pin;
+        }
+        else if ((crimeData[i]['UCR Literal']) == 'MANSLAUGHTER') {
+          pin = red_pin;
+        }
+        else {
+          pin = green_pin;
+        }
 
     
 
         //L.marker(location, {icon: red_pin}).addTo(myMap);
-        L.marker(location, {icon: red_pin}).bindPopup("<h1>" + crime_type + "</h1>").addTo(myMap);
+        L.marker(location, {icon: pin}).bindPopup("<h3> <b>" + crime_type + "</b></h3>" + "<h4>" + street_address + "</h4>" + "<h4> Possible Date: " + date + "</h4>" + "<h4> Possible Time: " + time + "</h4>").addTo(myMap);
 
     }
 
