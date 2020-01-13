@@ -37,6 +37,22 @@ var overlays = {
 // Create a control for our layers, add our overlay layers to it
 L.control.layers(null, overlays).addTo(map);
 
+//-------------------------------- Add Legend ----------------------------
+var legend = L.control({position: 'bottomright'});
+
+legend.onAdd = function (map) {
+    var div = L.DomUtil.create('div', 'legend');
+    div.innerHTML +=  '<img src="red-pin.png">' + '     Personal Crime' + '<br>'
+    
+
+    return div;
+};
+
+legend.addTo(map);
+
+//--------------------------------------------------------------------------
+
+
 //---------------------------------- Setup Variables ------------------------------------
 
 var red_pin = L.icon({
