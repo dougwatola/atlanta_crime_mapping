@@ -43,6 +43,8 @@ var legend = L.control({position: 'bottomright'});
 legend.onAdd = function (map) {
     var div = L.DomUtil.create('div', 'legend');
     div.innerHTML +=  '<img src="red-pin.png">' + '     Personal Crime' + '<br>'
+    div.innerHTML +=  '<img src="orange-pin.png">' + '     Property Crime' + '<br>'
+    div.innerHTML +=  '<img src="police.png">' + '     Police Precinct' + '<br>'
     
 
     return div;
